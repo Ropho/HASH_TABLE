@@ -28,4 +28,5 @@ Before optimizations analysis:
   > function is a very bad example of a hash function due to its collisions. 
 
 ![](/pic/ret1.png "RET1"){ width=60%,height=30% }
+<img src="/pic/ret1.png" alt="RET1" title="RET1" width="150" height="150"/>
 2. 
