@@ -27,5 +27,5 @@ Before optimizations analysis:
   * Number of elements in list
   > unlimited
 
-![RET1](/pic/ret1.png)
+![](/pic/ret1.png "RET1").
 2. 
