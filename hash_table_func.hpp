@@ -79,6 +79,5 @@ void print_in_file (hash_table *table, FILE *csv);
 void clear (hash_table *table);
 void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (char *));
 size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buffer, size_t (*hash_func) (char *));
-size_t find_word_in_table (char *word, size_t key, text *buffer);
-
+size_t find_word_in_table (char *word, size_t key, hash_table *table);
 #endif

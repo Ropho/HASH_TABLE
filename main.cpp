@@ -1,6 +1,8 @@
 #include "hash_table_func.hpp"
 
 
+
+
 int main (void) {
 
 /////////////////////////////////////////////////
@@ -26,36 +28,36 @@ int main (void) {
 
     words_arr_fill (buffer);
     
-    // hash_table_fill (table, buffer, r_hash);
+
+#if defined hash_r_hash
+    hash_table_fill (table, buffer, r_hash);
+#elif defined hash_ret_1
     hash_table_fill (table, buffer, hash_only_1);
-    // hash_table_fill (table, buffer, hash_first_symb);
-    // hash_table_fill (table, buffer, hash_len);
-    // hash_table_fill (table, buffer, hash_sum_symb);
-    
-    // hash_table_fill (table, buffer, hash_only_1);
+#elif defined hash_first_ASCII
+    hash_table_fill (table, buffer, hash_first_symb);
+#elif defined hash_len
+    hash_table_fill (table, buffer, hash_len);
+#elif defined hash_sum
+    hash_table_fill (table, buffer, hash_sum_symb);
+#else
+    hash_table_fill (table, buffer, hash_only_1);
+#endif
 
 ///////////////////////////////////////////////////////////////////////
+
     // clear (table);
-    
-    // hash_table_fill (table, buffer, r_hash);
-    // hash_table_fill (table, buffer, hash_only_1);
-    // hash_table_fill (table, buffer, hash_first_symb);
-    // hash_table_fill (table, buffer, hash_len);
-    // hash_table_fill (table, buffer, hash_sum_symb);
-    
-    // hash_table_fill (table, buffer, hash_only_1);
+
 ///////////////////////////////////////////////////////////////////////
-                //STRESS TEST     
 
-    find_info arr_word_pos [buffer->num_of_words] = {};
+    // find_info arr_word_pos [buffer->num_of_words] = {};
     
-    for (int index = 0; index < NUM_TESTS; ++index) {
+    // for (int index = 0; index < NUM_TESTS; ++index) {
 
-        if (find_text_in_table (arr_word_pos, table, buffer, r_hash) == 0) {
-            perror ("WORD NOT FOUND");
-            return HASH_TABLE_NOT_FOUND_WORD;
-        }
-    }
+    //     if (find_text_in_table (arr_word_pos, table, buffer, r_hash) == 0) {
+    //         perror ("WORD NOT FOUND");
+    //         return HASH_TABLE_NOT_FOUND_WORD;
+    //     }
+    // }
 ///////////////////////////////////////////////////////////////////////
 
     // graph (table);

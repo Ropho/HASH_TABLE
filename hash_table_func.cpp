@@ -7,7 +7,7 @@ size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buf
         
         size_t key = hash_func (buffer->words[index]);
         arr_word_pos[index].key = key;
-        arr_word_pos[index].num = find_word_in_table (buffer->words[index], key, buffer);
+        arr_word_pos[index].num = find_word_in_table (buffer->words[index], key, table);
         
         if (arr_word_pos[index].num == 0)
             return 0;
@@ -17,16 +17,19 @@ size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buf
     return 1;
 }
 
-size_t find_word_in_table (char *word, size_t key, text *buffer) {
+size_t find_word_in_table (char *word, size_t key, hash_table *table) {
 
     size_t index = 0;
 
-    for (index = 0; index < buffer->num_of_words; ++index) {
-        if (strcmp (buffer->words[index], word) == 0)
+    node *ptr = (table->arr + key)->head;
+    while (ptr != nullptr) {
+        ++index;
+        if (strcmp (ptr->s, word) == 0)
             break;
+        ptr = ptr->next;
     }
 
-    if (index != buffer->num_of_words)
+    if (ptr != nullptr)
         return index + 1;
     else
         return 0;
@@ -78,7 +81,8 @@ void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (char
     for (int index = 0; index < buffer->num_of_words; ++index) {
         
         int hash = hash_func (*(buffer->words + index));
-        insert_in_list (table, hash, (*(buffer->words + index)));
+        if (find_word_in_table (*(buffer->words + index), hash, table) == 0)
+            insert_in_list (table, hash, (*(buffer->words + index)));
     }
 }
 
