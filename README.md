@@ -21,9 +21,11 @@ Before optimizations analysis:
 ### HASH FUNCTIONS
 
 1.  **Return 1**
+
   * Number of lists
   > 255, used only 1
   * Number of elements in list
   > unlimited
 
+![NOSIMD](/ret1.png)
 2. 
