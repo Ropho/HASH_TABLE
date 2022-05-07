@@ -27,5 +27,5 @@ Before optimizations analysis:
   * Fast description
   > function is a very bad example of a hash function due to its collisions. 
 
-![](/pic/ret1.png "RET1").
+![](/pic/ret1.png "RET1"){ width=60%,height=30% }
 2. 
