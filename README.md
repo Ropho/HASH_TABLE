@@ -24,8 +24,8 @@ Before optimizations analysis:
 
   * Number of lists
   > 255, used only 1
-  * Number of elements in list
-  > unlimited
+  * Fast description
+  > function is a very bad example of a hash function due to its collisions. 
 
 ![](/pic/ret1.png "RET1").
 2. 
