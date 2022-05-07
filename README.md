@@ -27,5 +27,5 @@ Before optimizations analysis:
   * Fast description
   > function is a very bad example of a hash function due to its collisions. 
 
-<img src="/pic/ret1.png" alt="RET1" title="RET1" width="512" height="512"/>
+<img src="/pic/ret1.png" alt="RET1" title="RET1" width="720" height="480"/>
 2. 
