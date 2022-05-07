@@ -1,8 +1,5 @@
 # HASH_TABLE
 
-Before optimizations analysis:
-------------------------------
-
 ### USING
 1. Time counter
   > time "linux"
@@ -17,6 +14,11 @@ Before optimizations analysis:
   >   > 4. finding the position of all the words from the text in Hamlet **FIVE TIMES**
   
   > 5. clearing the table
+
+Before optimizations analysis:
+------------------------------
+
+### HASH FUNCTIONS
 
 1.  Return 1
   1. Number of lists
