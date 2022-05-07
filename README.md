@@ -22,6 +22,7 @@ Before optimizations analysis:
 
 1.  Return 1
   1. Number of lists
-  > 255, used only 1
-  3. Number of elements in list
-  > unlimited
+    > 255, used only 1
+  2. Number of elements in list
+    > unlimited
+2. 
