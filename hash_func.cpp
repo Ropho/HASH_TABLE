@@ -27,7 +27,7 @@ size_t r_hash (char *word) {
         hash *= 0xc2b2ae35;
         hash ^= (hash >> 16);
         
-        return hash % CAPACITY;    
+        return hash % NUM_LISTS;    
     }
 
 
@@ -37,12 +37,12 @@ size_t hash_only_1 (char *word) {
 
 
 size_t hash_first_symb (char *word) {
-    return (size_t) (*word % CAPACITY);
+    return (size_t) (*word % NUM_LISTS);
 }
 
 
 size_t hash_len (char *word) {
-    return strlen (word) % CAPACITY;
+    return strlen (word) % NUM_LISTS;
 }
 
 
@@ -56,6 +56,6 @@ size_t hash_sum_symb (char *word) {
         ++ptr;
     }
 
-    return key % CAPACITY;
+    return key % NUM_LISTS;
 }
 

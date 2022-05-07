@@ -42,7 +42,7 @@ void print_in_file (hash_table *table, FILE *csv) {
 
         int len = (table->arr[index]).num_of_elem;
 
-        fprintf (csv, " %d,%d\n", index, len);
+        fprintf (csv, " %d;%d\n", index, len);
 
     }
 }
@@ -154,7 +154,7 @@ hash_table* ctor (void) {
     hash_table *new_table = (hash_table*)calloc(1, sizeof (hash_table));
     
     new_table->error    = 0;
-    new_table->capacity = CAPACITY;
+    new_table->capacity = NUM_LISTS;
 
     new_table->arr = (node_ptr*)calloc (new_table->capacity, sizeof (node_ptr));
     if (new_table->arr == nullptr) {

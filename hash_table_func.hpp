@@ -38,7 +38,7 @@ typedef struct node_ptr {
 
 typedef struct hash_table {
 
-    size_t capacity = CAPACITY;
+    size_t capacity = NUM_LISTS;
 
     size_t error = 0;
 
