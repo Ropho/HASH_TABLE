@@ -21,8 +21,8 @@ Before optimizations analysis:
 ### HASH FUNCTIONS
 
 1.  Return 1
-  1. Number of lists
-    > 255, used only 1
-  2. Number of elements in list
-    > unlimited
+* Number of lists
+  > 255, used only 1
+* Number of elements in list
+  > unlimited
 2. 
