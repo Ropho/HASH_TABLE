@@ -1,4 +1,5 @@
-# HASH_TABLE
+HASH_TABLE
+==========
 
 ## TABLE CAPACITY
   + > We wanna have max **20 elements** in 1 list with a good hash func, 
@@ -61,25 +62,16 @@ Before optimizations analysis:
 
 Dispersion values for different hash functions:
 
-|-------------|------------|
 | hash func   | dispersion |
-|-------------|------------|
 | ret_1       | 589296     |
-|-------------|------------|
 | first ASCII | 23043      |
-|-------------|------------|
 | len         | 65230      |
-|-------------|------------|
 | sum ASCII   | 351        |
-|-------------|------------|
-| rol         | 87         |
-|-------------|------------|
-| crc32       | 17         |
-|-------------|------------|
+| rol         | 711        |
+| crc32       | 25         |
 
 ### **As expected, the best parametres has a *CRS 32* function**
 
-|---------------------------------------------------------------|
 
 ## Optimization
 
