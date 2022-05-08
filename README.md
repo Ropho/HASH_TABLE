@@ -63,17 +63,12 @@ Before optimizations analysis:
 Dispersion values for different hash functions:
 
 | hash func   | dispersion |
-|--------------------------|
+|-------------|------------|
 | ret_1       | 589296     |
-|--------------------------|
 | first ASCII | 23043      |
-|--------------------------|
 | len         | 65230      |
-|--------------------------|
 | sum ASCII   | 351        |
-|--------------------------|
 | rol         | 711        |
-|--------------------------|
 | crc32       | 25         |
 
 ### **As expected, the best parametres has a *CRS 32* function**
