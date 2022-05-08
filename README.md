@@ -1,5 +1,11 @@
 # HASH_TABLE
 
+## TABLE CAPACITY
+  > We wanna have max **20 elements** in 1 list, 
+  > so in accordance with having a text with **24000 Unique words**
+  > We will have approximately **1024 lists**
+  > *That is a fixed size used in all the testing* 
+
 ## USING
 1. Time counter
   > time "linux"
