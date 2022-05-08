@@ -22,8 +22,7 @@ HASH_TABLE
   
   > 5. clearing the table
 
-Before optimizations analysis:
-------------------------------
+# Before optimizations analysis:
 
 ## HASH FUNCTIONS
 
@@ -83,5 +82,5 @@ Dispersion values for different hash functions:
 ### **As expected, the best parametres has a *CRC 32* function**
 
 
-## Optimization
+# Optimization
 
