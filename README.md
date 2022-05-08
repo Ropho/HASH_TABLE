@@ -52,13 +52,13 @@ Before optimizations analysis:
 ### 5.  **ROL**
   
   * Fast description
-  > like the previous function has a small variety of keys (only 255 of desired 1024) and very high percent of collisions cause words lengths are rather limited, so cannot be a good hash function. 
+  > Better than previous ones: has a variety of keys and rather low maximum number of elements in a list. But it has some empty spaces (not full covering) -> BAD.  
 
 
 ### 6.  **CRC 32**
   
   * Fast description
-  > like the previous function has a small variety of keys (only 255 of desired 1024) and very high percent of collisions cause words lengths are rather limited, so cannot be a good hash function. 
+  > The best of given hash functions: **High variety** of keys, **very low** (desired 20-30) maximum (average) number of elements in a list and **even covering** of lists.
 
 Dispersion values for different hash functions:
 
