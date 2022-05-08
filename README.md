@@ -39,26 +39,35 @@ Before optimizations analysis:
   * Fast description
   > function is better than *return 1*, as it can give out multiple values but has a small variety of keys (only 255 of desired 1024) and very high percent of collisions, so cannot be a good hash function. 
 
+<img src="/pic/first_ASCII.png" alt="first_ASCII" title="first_ASCII" width="720" height="480"/>
+
 ### 3.  **Len of word**
   
   * Fast description
   > like the previous function has a small variety of keys (only 255 of desired 1024) and very high percent of collisions cause words lengths are rather limited, so cannot be a good hash function. 
+
+<img src="/pic/len.png" alt="LEN" title="LEN" width="720" height="480"/>
 
 ### 4.  **Sum of ASCII**
   
   * Fast description
   > a better function than previous ones. Covers all the given 1024 keys, but has some roblems with smoothness (has maximums and minimums which are easily distinguished, so has up to 80 elements in list (desired 20). Still cannot be a good hash function.
 
+<img src="/pic/sum.png" alt="SUM" title="SUM" width="720" height="480"/>
+
 ### 5.  **ROL**
   
   * Fast description
   > Better than previous ones: has a variety of keys and rather low maximum number of elements in a list. But it has some empty spaces (not full covering) -> BAD.  
 
+<img src="/pic/rol.png" alt="ROL" title="ROL" width="720" height="480"/>
 
 ### 6.  **CRC 32**
   
   * Fast description
-  > The best of given hash functions: **High variety** of keys, **very low** (desired 20-30) maximum (average) number of elements in a list and **even covering** of lists.
+  > The best of given hash functions: **high variety** of keys, **very low** (desired 20-30) maximum (average) number of elements in a list and **even covering** of lists.
+
+<img src="/pic/crc32.png" alt="CRC32" title="CRC32" width="720" height="480"/>
 
 Dispersion values for different hash functions:
 
@@ -71,7 +80,7 @@ Dispersion values for different hash functions:
 | rol         | 711        |
 | crc32       | 25         |
 
-### **As expected, the best parametres has a *CRS 32* function**
+### **As expected, the best parametres has a *CRC 32* function**
 
 
 ## Optimization
