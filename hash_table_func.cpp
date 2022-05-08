@@ -1,13 +1,13 @@
 #include "hash_table_func.hpp"
 
 
-size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buffer, size_t (*hash_func) (char *)) {
+size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t)) {
 
     for (int index = 0; index < buffer->num_of_words; ++index) {
         
-        size_t key = hash_func (buffer->words[index]);
+        size_t key = hash_func ((buffer->words[index]).s, (buffer->words[index]).len);
         arr_word_pos[index].key = key;
-        arr_word_pos[index].num = find_word_in_table (buffer->words[index], key, table);
+        arr_word_pos[index].num = find_word_in_table (buffer->words[index].s, key, table);
         
         if (arr_word_pos[index].num == 0)
             return 0;
@@ -24,7 +24,7 @@ size_t find_word_in_table (char *word, size_t key, hash_table *table) {
     node *ptr = (table->arr + key)->head;
     while (ptr != nullptr) {
         ++index;
-        if (strcmp (ptr->s, word) == 0)
+        if (strcmp (ptr->word.s, word) == 0)
             break;
         ptr = ptr->next;
     }
@@ -58,7 +58,7 @@ void insert_in_list (hash_table *table,  size_t key, char *word) {
         perror ("MEM ALLOC TROUBLE");
         assert (0);
     }
-    ptr->s =  word;
+    ptr->word.s =  word;
     ptr->prev = nullptr;
 
     (*(table->arr + key)).num_of_elem++;
@@ -76,13 +76,13 @@ void insert_in_list (hash_table *table,  size_t key, char *word) {
 }
 
 
-void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (char *)) {
+void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t)) {
 
     for (int index = 0; index < buffer->num_of_words; ++index) {
         
-        int hash = hash_func (*(buffer->words + index));
-        if (find_word_in_table (*(buffer->words + index), hash, table) == 0)
-            insert_in_list (table, hash, (*(buffer->words + index)));
+        int hash = hash_func ((buffer->words + index)->s, (buffer->words + index)->len);
+        if (find_word_in_table ((buffer->words + index)->s, hash, table) == 0)
+            insert_in_list (table, hash, (buffer->words + index)->s);
     }
 }
 
@@ -109,7 +109,8 @@ void words_arr_fill (text *buffer) {
             ++end_wrd;
 
 
-        buffer->words[buffer->num_of_words] = strt_wrd;
+        buffer->words[buffer->num_of_words].s = strt_wrd;
+        buffer->words[buffer->num_of_words].len = end_wrd - strt_wrd;
         ++buffer->num_of_words;
         
         if (*end_wrd == '\0')
@@ -137,7 +138,7 @@ text *read_from_file (FILE *in) {
     
     buffer->buff_size = get_file_size (in) + 1;     // add \0 IN THE END
 
-    buffer->words = (char**)calloc(buffer->buff_size, sizeof (char*));
+    buffer->words = (word*)calloc(buffer->buff_size, sizeof (word));
     if (buffer->words == nullptr) {
         perror ("ALLOCATION TROUBLE");
         return nullptr;
@@ -149,7 +150,7 @@ text *read_from_file (FILE *in) {
     else {
         buffer->buff [buffer->buff_size - 1] = '\0';    //add \0 in the end
         return buffer;
-    }   
+    }
 }
 
 
@@ -245,7 +246,7 @@ void graph (hash_table *table) {
         // fprintf (dump, "\"%p\" [style=filled,color=\"hotpink\"];", table + key);
 
         while (ptr != nullptr) {
-            fprintf (dump, "\"%p\" [label = \"%s\" ]\n ", ptr, ptr->s);
+            fprintf (dump, "\"%p\" [label = \"%s\" ]\n ", ptr, ptr->word.s);
 
             if (ptr->prev != nullptr)
                 fprintf (dump, " \"%p\"->\"%p\" \n", ptr->prev, ptr);

@@ -8,10 +8,12 @@
 #include "constants.hpp"
 
 
-size_t hash_only_1     (char *word);
-size_t hash_first_symb (char *word);
-size_t hash_len        (char *word);
-size_t hash_sum_symb   (char *word);
-size_t r_hash          (char *word);
+size_t hash_only_1     (void *ptr, size_t len);
+size_t hash_first_symb (void *ptr, size_t len);
+size_t hash_len        (void *ptr, size_t len);
+size_t hash_sum_symb   (void *ptr, size_t len);
+size_t hash_rol        (void *ptr, size_t len);
+size_t hash_crc_32     (void *ptr, size_t len);
 
+size_t r_hash          (char *word);
 #endif

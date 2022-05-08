@@ -6,7 +6,8 @@
 int main (void) {
 
 /////////////////////////////////////////////////
-    FILE *in   = fopen ("HAMLET.txt", "rb");
+    FILE *in   = fopen ("words.txt", "rb");
+    // FILE *in   = fopen ("HAMLET.txt", "rb");
     // FILE *in   = fopen ("mem.txt", "rb");
     if (in == nullptr) {
         perror ("OPEN FILE ERROR");
@@ -29,18 +30,22 @@ int main (void) {
     words_arr_fill (buffer);
     
 
-#if defined hash_r_hash
+#if defined HASH_R_HASH
     hash_table_fill (table, buffer, r_hash);
-#elif defined hash_ret_1
+#elif defined HASH_RET_1
     hash_table_fill (table, buffer, hash_only_1);
-#elif defined hash_first_ASCII
+#elif defined HASH_FIRST_ASCII
     hash_table_fill (table, buffer, hash_first_symb);
-#elif defined hash_len
+#elif defined HASH_LEN
     hash_table_fill (table, buffer, hash_len);
-#elif defined hash_sum
+#elif defined HASH_SUM
     hash_table_fill (table, buffer, hash_sum_symb);
+#elif defined HASH_ROL
+    hash_table_fill (table, buffer, hash_rol);
+#elif defined HASH_CRC_32
+    hash_table_fill (table, buffer, hash_crc_32);
 #else
-    hash_table_fill (table, buffer, hash_only_1);
+    assert (0);
 #endif
 
 ///////////////////////////////////////////////////////////////////////

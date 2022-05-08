@@ -13,10 +13,18 @@
 #include "constants.hpp"
 #include "hash_func.hpp"
 
+typedef struct word {
+
+    char *s = nullptr;
+
+    size_t len = 0;
+
+}word;
+
 
 typedef struct node {
 
-    char *s = nullptr;
+    struct word word = {};
 
     node *next = nullptr;
 
@@ -53,7 +61,7 @@ typedef struct text {
 
     char *buff = nullptr;
 
-    char **words = nullptr;
+    word *words = nullptr;
 
     size_t num_of_words = 0;
 }text;
@@ -65,8 +73,8 @@ typedef struct find_info {
 
     int num = 0;
 
-
 }find_info;
+
 
 hash_table* ctor (void);
 void dtor (hash_table **table);
@@ -77,7 +85,8 @@ void find_pos (hash_table *table,  size_t key);
 void graph (hash_table *table);
 void print_in_file (hash_table *table, FILE *csv);
 void clear (hash_table *table);
-void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (char *));
+void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t));
 size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buffer, size_t (*hash_func) (char *));
 size_t find_word_in_table (char *word, size_t key, hash_table *table);
+
 #endif
