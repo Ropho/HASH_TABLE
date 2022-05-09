@@ -110,20 +110,64 @@ Compile
 
 Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
+
++ strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
+  * > self 27% (82.500.0000)
+  * > called 3.700.000 times
+  >Was rewritten in asm.
++     
+r_strcmp:
+
+    mov rbx, rdi
+    mov rdx, rsi
+
+	push rbx
+    push rdx
+    	call r_strlen ;rcx has strlen1
+	pop rdx
+    pop rbx
+	
+.check_ASCII:
+
+	mov ah, byte [rbx]
+	
+	mov rdi, rdx
+	mov al, byte [rdi]
+
+	cmp ah, al
+
+	ja .not_equal_greater
+	jb .not_equal_less
+
+	inc rbx
+	inc rdx
+
+	cmp ah, 0Ah
+	je .equal
+	
+	jmp .check_ASCII
+
+.equal:
+	mov rax, 0
+    ret
+		
+.not_equal_greater:
+	mov rax, 1	
+	ret
+.not_equal_less:
+	mov rax, -1
+	ret
+
 + find_word_in_table
-  * > self 18%
+  * > self 18% (55.000.000)
   * > called 300.000 times
 
 + hash_crc_32
-  * > 15%
+  * > self 15% (45.000.000)
   * > called 300.000 times  
 
-+ strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
-  * > 27%
-  * > called 3.700.000 times
-
-|            | no opt   | no opt O2|  opt  |
-|:----------:|:--------:|:--------:|:----:|
-|real (secs) |0,296     |0,247     |      |
-|user (secs) |0,295     |0,246     |      |
-|sys  (secs) |0,002     |0,001     |      |
+|            | no opt   | no opt O2|  opt 1|
+|:----------:|:--------:|:--------:|:-----:|
+|real (secs) |0,296     |0,247     |       |
+|user (secs) |0,295     |0,246     |       |
+|sys  (secs) |0,002     |0,001     |       |
