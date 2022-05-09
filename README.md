@@ -111,16 +111,16 @@ Compile
 Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
 + find_word_in_table
-  > self 18%
-  > called 300.000 times
+  * > self 18%
+  * > called 300.000 times
 
 + hash_crc_32
-  > 15%
-  > called 300.000 times  
+  * > 15%
+  * > called 300.000 times  
 
 + strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
-  > 27%
-  > called 3.700.000 times
+  * > 27%
+  * > called 3.700.000 times
 
 |            | no opt   | no opt O2|  opt  |
 |:----------:|:--------:|:--------:|:----:|
