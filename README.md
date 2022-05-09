@@ -83,7 +83,47 @@ Dispersion values for different hash functions:
 
 
 # Optimization
-|            | no opt   | no opt O2|
-|:----------:|:--------:|:--------:|
-|real        |          |          |
-|user        |          |          |
+
+
+Usage
+-----
+1.  Processor
+    > AMD Ryzen 5 4500U
+2.  Instructions
+    > AVX, AVX2
+3.  Language
+    > C, C++, Assembly (NASM)
+4.  Profiler
+    > Kcachegrind (WSL)
+5.  Compiler
+    > GCC
+6.  Hash function
+    > CRC32
+
+Compile
+-------
+  > gcc -O2 main.cpp hash_table_func.cpp hash_func.cpp -o main ; 
+  > time ./main
+
+
+  > **Average per 10 measurements is taken.**
+
+Have a look at the kcachegrind window. Funcs what we wil be looking at:
+
++ find_word_in_table
+  > self 18%
+  > called 300.000 times
+
++ hash_crc_32
+  > 15%
+  > called 300.000 times  
+
++ strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
+  > 27%
+  > called 3.700.000 times
+
+|            | no opt   | no opt O2|  opt  |
+|:----------:|:--------:|:--------:|:----:|
+|real (secs) |0,296     |0,247     |      |
+|user (secs) |0,295     |0,246     |      |
+|sys  (secs) |0,002     |0,001     |      |
