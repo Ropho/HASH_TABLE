@@ -116,47 +116,48 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
   * > called 3.700.000 times
   >Was rewritten in asm.
 +     
-r_strcmp:
 
-    mov rbx, rdi
-    mov rdx, rsi
+	r_strcmp:
 
-	push rbx
-    push rdx
-    	call r_strlen ;rcx has strlen1
-	pop rdx
-    pop rbx
-	
-.check_ASCII:
+	    mov rbx, rdi
+	    mov rdx, rsi
 
-	mov ah, byte [rbx]
-	
-	mov rdi, rdx
-	mov al, byte [rdi]
+		push rbx
+	    push rdx
+		call r_strlen ;rcx has strlen1
+		pop rdx
+	    pop rbx
 
-	cmp ah, al
+	.check_ASCII:
 
-	ja .not_equal_greater
-	jb .not_equal_less
+		mov ah, byte [rbx]
 
-	inc rbx
-	inc rdx
+		mov rdi, rdx
+		mov al, byte [rdi]
 
-	cmp ah, 0Ah
-	je .equal
-	
-	jmp .check_ASCII
+		cmp ah, al
 
-.equal:
-	mov rax, 0
-    ret
-		
-.not_equal_greater:
-	mov rax, 1	
-	ret
-.not_equal_less:
-	mov rax, -1
-	ret
+		ja .not_equal_greater
+		jb .not_equal_less
+
+		inc rbx
+		inc rdx
+
+		cmp ah, 0Ah
+		je .equal
+
+		jmp .check_ASCII
+
+	.equal:
+		mov rax, 0
+	    ret
+
+	.not_equal_greater:
+		mov rax, 1	
+		ret
+	.not_equal_less:
+		mov rax, -1
+		ret
 
 + find_word_in_table
   * > self 18% (55.000.000)
