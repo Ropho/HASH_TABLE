@@ -83,6 +83,7 @@ Dispersion values for different hash functions:
 
 
 # Optimization
-|    | no opt| no opt O2| 
+|    | no opt| no opt O2|
+|------------|----------|
 |real|       |          |
 |user|       |          |
