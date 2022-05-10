@@ -4,33 +4,37 @@
 size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t)) {
 
     for (int index = 0; index < buffer->num_of_words; ++index) {
-        
+
         size_t key = hash_func ((buffer->words[index]).s, (buffer->words[index]).len);
         arr_word_pos[index].key = key;
         arr_word_pos[index].num = find_word_in_table (buffer->words[index].s, key, table);
-        
+
+
+        // printf ("word: %s \t key: %ld \t num: %ld\n", (buffer->words[index]).s, arr_word_pos[index].key, arr_word_pos[index].num);
+
         if (arr_word_pos[index].num == 0)
             return 0;
-        // printf ("key: %ld \t num: %ld\n", arr_word_pos[index].key, arr_word_pos[index].num);
     }
-
     return 1;
 }
 
 size_t find_word_in_table (char *word, size_t key, hash_table *table) {
 
     size_t index = 0;
-
-    node *ptr = (table->arr + key)->head;
+    node  *ptr = (table->arr + key)->head;
+  
     while (ptr != nullptr) {
+
         ++index;
-        if (strcmp (ptr->word.s, word) == 0)
+
+        // if (strcmp (ptr->word.s, word) == 0) // NO_OPT
+        if (r_strcmp (ptr->word.s, word) == 0)  // OPT: asm func
             break;
         ptr = ptr->next;
     }
 
     if (ptr != nullptr)
-        return index + 1;
+        return index;
     else
         return 0;
 }

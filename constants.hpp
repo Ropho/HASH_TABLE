@@ -10,25 +10,11 @@
 
 // #define HASH_R_HASH
 
-#if defined hash_ret_1 || defined hash_first_ASCII || defined hash_len
+#define NUM_LISTS 1024
+#define NUM_ELEM_IN_LIST 20
+#define NUM_TESTS 5
 
-    #define NUM_LISTS 1024
-    #define NUM_ELEM_IN_LIST 20
-    #define NUM_TESTS 5
 
-#elif defined hash_sum || defined hash_r_hash
-
-    #define NUM_LISTS 1024
-    #define NUM_ELEM_IN_LIST 20
-    #define NUM_TESTS 5
-
-#else
-    
-    #define NUM_LISTS 1024
-    #define NUM_ELEM_IN_LIST 20
-    #define NUM_TESTS 5
-
-#endif
 // #define NDEBUG
 
 enum ERRORS {

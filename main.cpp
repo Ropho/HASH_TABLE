@@ -30,9 +30,7 @@ int main (void) {
     words_arr_fill (buffer);
     
 
-#if defined HASH_R_HASH
-    hash_table_fill (table, buffer, r_hash);
-#elif defined HASH_RET_1
+#if defined HASH_RET_1
     hash_table_fill (table, buffer, hash_only_1);
 #elif defined HASH_FIRST_ASCII
     hash_table_fill (table, buffer, hash_first_symb);
@@ -54,23 +52,25 @@ int main (void) {
 
 ///////////////////////////////////////////////////////////////////////
 
-    // find_info arr_word_pos [buffer->num_of_words] = {};
+    find_info arr_word_pos [buffer->num_of_words] = {};
     
-    // for (int index = 0; index < NUM_TESTS; ++index) {
+    for (int index = 0; index < NUM_TESTS; ++index) {
 
-    //     if (find_text_in_table (arr_word_pos, table, buffer, r_hash) == 0) {
-    //         perror ("WORD NOT FOUND");
-    //         return HASH_TABLE_NOT_FOUND_WORD;
-    //     }
-    // }
+        #if defined HASH_CRC_32
+            if (find_text_in_table (arr_word_pos, table, buffer, hash_crc_32) == 0) {
+        #endif
+            perror ("WORD NOT FOUND");
+            return HASH_TABLE_NOT_FOUND_WORD;
+        }
+    }
 ///////////////////////////////////////////////////////////////////////
 
     // graph (table);
 
 ///////////////////////////////////////////////////////////////////////
-    FILE *csv = fopen ("excel.csv", "wb");
-    print_in_file (table, csv);
-    fclose (csv);
+    // FILE *csv = fopen ("excel.csv", "wb");
+    // print_in_file (table, csv);
+    // fclose (csv);
 ///////////////////////////////////////////////////////////////////////
     dtor (&table);
 }

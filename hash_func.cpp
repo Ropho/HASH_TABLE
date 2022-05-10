@@ -35,36 +35,6 @@ size_t hash_rol (void *ptr, size_t len) {
 }
 
 
-static size_t rotl (size_t n) {
-
-        size_t d = 13;
-        n *= d;
-        return (n << d)|(n >> (32 - d));
-    }
-
-
-size_t r_hash (char *word) {
-
-        assert (word != nullptr);
-        
-        size_t hash = 0x1337;
-
-        int len = strlen (word);
-        for (int index = 0; index < len; ++index) {
-            hash ^= rotl (*(word + index));
-        }
-
-        //avalanche
-        hash ^= (hash >> 16);
-        hash *= 0x85ebca6b;
-        hash ^= (hash >> 13);
-        hash *= 0xc2b2ae35;
-        hash ^= (hash >> 16);
-        
-        return hash % NUM_LISTS;    
-    }
-
-
 size_t hash_only_1 (void *ptr, size_t len) {
     return 1;
 }

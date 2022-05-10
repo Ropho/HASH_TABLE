@@ -15,5 +15,4 @@ size_t hash_sum_symb   (void *ptr, size_t len);
 size_t hash_rol        (void *ptr, size_t len);
 size_t hash_crc_32     (void *ptr, size_t len);
 
-size_t r_hash          (char *word);
 #endif
