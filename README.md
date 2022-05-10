@@ -120,7 +120,7 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 + strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
   * > self 27% (82.500.0000)
   * > called 3.700.000 times
-  > Was rewritten in asm. Function self time reduced in 2 times (44.000.000 -> 22.000.000). Got no boost in overall time.  
+  > Was rewritten in asm. Function self time reduced in 2 times (44.000.000 -> 22.000.000). Got no boost in overall time. Probably, the function wasn't the "bottle neck" in our program. Gonna look through other functions.
 
 
 		r_strcmp:
@@ -175,6 +175,6 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
 |            | no opt   | no opt O2|  opt 1|
 |:----------:|:--------:|:--------:|:-----:|
-|real (secs) |0,077     |0,06     |0,06       |
-|user (secs) |0,073     |0,058     |0,058       |
-|sys  (secs) |0,003     |0,002     |0,026       |
+|real (secs) |0,077     |0,06      |0,06   |
+|user (secs) |0,073     |0,058     |0,058  |
+|sys  (secs) |0,003     |0,002     |0,026  |
