@@ -156,7 +156,7 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 			mov rax, -1
 			ret
 
-<img src="/pic/1_opt.png" alt="1OPT" title="1OPT" width="720" height="480"/>
+<img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="720" height="480"/>
 
 
 + find_word_in_table
