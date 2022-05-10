@@ -124,42 +124,41 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 + strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
   * > self 27% (82.500.0000)
   * > called 3.700.000 times
-  >Was rewritten in asm. Function self time reduced in 2 times (44.000.000 -> 22.000.000). Got no boost in overall time.
-+     
-
-	r_strcmp:
+  > Was rewritten in asm. Function self time reduced in 2 times (44.000.000 -> 22.000.000). Got no boost in overall time.  
 
 
-	.check_ASCII:
+		r_strcmp:
 
-		mov ah, byte [rdi]
+		.check_ASCII:
 
-		mov al, byte [rsi]
+			mov ah, byte [rdi]
 
-		cmp ah, al
+			mov al, byte [rsi]
 
-		ja .not_equal_greater
-		jb .not_equal_less
+			cmp ah, al
 
-		inc rdi
-		inc rsi
+			ja .not_equal_greater
+			jb .not_equal_less
 
-		cmp ah, 0d
-		je .equal
+			inc rdi
+			inc rsi
 
-		jmp .check_ASCII
+			cmp ah, 0d
+			je .equal
 
-	.equal:
-		mov rax, 0
-	    ret
+			jmp .check_ASCII
 
-	.not_equal_greater:
-		mov rax, 1	
-		ret
+		.equal:
+			mov rax, 0
+		    ret
 
-	.not_equal_less:
-		mov rax, -1
-		ret
+		.not_equal_greater:
+			mov rax, 1	
+			ret
+
+		.not_equal_less:
+			mov rax, -1
+			ret
 
 <img src="/pic/1_opt.png" alt="1OPT" title="1OPT" width="720" height="480"/>
 
