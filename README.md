@@ -115,7 +115,7 @@ Compile
 
 Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
-<img src="/pic/no_opt.png" alt="NOOPT" title="NOOPT" width="720" height="480"/>
+<img src="/pic/no_opt.png" alt="NOOPT" title="NOOPT" width="682" height="835"/>
 
 + strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
   * > self 27% (82.500.0000)
@@ -156,7 +156,7 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 			mov rax, -1
 			ret
 
-<img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="720" height="480"/>
+<img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="682" height="835"/>
 
 
 + find_word_in_table
