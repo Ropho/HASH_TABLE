@@ -25,9 +25,7 @@ HASH_TABLE
 Compile
 -------
 	all:
-		gcc main.cpp hash_table_func.cpp hash_func.cpp -o main
-
-	./main
+		gcc main.cpp hash_table_func.cpp hash_func.cpp -o main ; ./main
 	
 ## HASH FUNCTIONS
 
@@ -110,9 +108,7 @@ Usage
 Compile
 -------
 	all:
-		nasm -felf64 asm/find_word.asm && gcc -O2 -mavx2 asm/find_word.o main.cpp hash_table_func.cpp hash_func.cpp -o main
-
-	time ./main
+		nasm -felf64 asm/find_word.asm && gcc -O2 -mavx2 asm/find_word.o main.cpp hash_table_func.cpp hash_func.cpp -o main ; time ./main
 
 
   > **Average per 10 measurements is taken.**
