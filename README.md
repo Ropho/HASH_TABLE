@@ -7,23 +7,28 @@ HASH_TABLE
   + > We will have approximately **1024 lists**
   + > *That is a fixed size used in all the testing* 
 
-## USING
-1. Time counter
-  > time "linux"
-
 ## TESTING
   
   > 1. filling the buffer up with Hamlet from file
   > 2. filling the char pointer array up with the words
   > 3. filling the table with the char pointer array
 
-## STRESS TEST
+### STRESS TEST
   >   > 4. finding the position of all the words from the text in Hamlet **FIVE TIMES**
   
   > 5. clearing the table
 
+
 # Before optimizations analysis:
 
+
+Compile
+-------
+	all:
+		gcc main.cpp hash_table_func.cpp hash_func.cpp -o main
+
+	./main
+	
 ## HASH FUNCTIONS
 
 ### 1.  **Return 1**
@@ -99,51 +104,47 @@ Usage
     > GCC
 6.  Hash function
     > CRC32
+7.  Timer
+    > time ./program (WSL)
 
 Compile
 -------
-  > gcc -O2 main.cpp hash_table_func.cpp hash_func.cpp -o main ; 
-  > time ./main
+	all:
+		nasm -felf64 asm/find_word.asm && gcc -O2 -mavx2 asm/find_word.o main.cpp hash_table_func.cpp hash_func.cpp -o main
+
+	time ./main
 
 
   > **Average per 10 measurements is taken.**
 
 Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
+<img src="/pic/no_opt.png" alt="NOOPT" title="NOOPT" width="720" height="480"/>
 
 + strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
   * > self 27% (82.500.0000)
   * > called 3.700.000 times
-  >Was rewritten in asm.
+  >Was rewritten in asm. Function self time reduced in 2 times (44.000.000 -> 22.000.000). Got no boost in overall time.
 +     
 
 	r_strcmp:
 
-	    mov rbx, rdi
-	    mov rdx, rsi
-
-		push rbx
-	    push rdx
-		call r_strlen ;rcx has strlen1
-		pop rdx
-	    pop rbx
 
 	.check_ASCII:
 
-		mov ah, byte [rbx]
+		mov ah, byte [rdi]
 
-		mov rdi, rdx
-		mov al, byte [rdi]
+		mov al, byte [rsi]
 
 		cmp ah, al
 
 		ja .not_equal_greater
 		jb .not_equal_less
 
-		inc rbx
-		inc rdx
+		inc rdi
+		inc rsi
 
-		cmp ah, 0Ah
+		cmp ah, 0d
 		je .equal
 
 		jmp .check_ASCII
@@ -155,13 +156,23 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 	.not_equal_greater:
 		mov rax, 1	
 		ret
+
 	.not_equal_less:
 		mov rax, -1
 		ret
 
+<img src="/pic/1_opt.png" alt="1OPT" title="1OPT" width="720" height="480"/>
+
+
 + find_word_in_table
   * > self 18% (55.000.000)
   * > called 300.000 times
+  > Was rewritten in asm. 
+
+
+
+
+
 
 + hash_crc_32
   * > self 15% (45.000.000)
@@ -169,6 +180,6 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
 |            | no opt   | no opt O2|  opt 1|
 |:----------:|:--------:|:--------:|:-----:|
-|real (secs) |0,296     |0,247     |       |
-|user (secs) |0,295     |0,246     |       |
-|sys  (secs) |0,002     |0,001     |       |
+|real (secs) |0,077     |0,06     |0,06       |
+|user (secs) |0,073     |0,058     |0,058       |
+|sys  (secs) |0,003     |0,002     |0,026       |
