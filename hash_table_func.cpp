@@ -1,4 +1,4 @@
-#include "hash_table_func.hpp"
+#include ".h/hash_table_func.hpp"
 
 
 size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t)) {
@@ -6,10 +6,16 @@ size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buf
     for (int index = 0; index < buffer->num_of_words; ++index) {
 
         size_t key = hash_func ((buffer->words[index]).s, (buffer->words[index]).len);
+        // size_t key = hash_crc_32_asm ((buffer->words[index]).s, (buffer->words[index]).len) % NUM_LISTS;
+
         arr_word_pos[index].key = key;
+        // printf ("KEY: %ld\n", key);
+
+#ifndef opt_find_word_asm
         arr_word_pos[index].num = find_word_in_table (buffer->words[index].s, key, table);
-
-
+#else
+        arr_word_pos[index].num = find_word (buffer->words[index].s, key, table);
+#endif
         // printf ("word: %s \t key: %ld \t num: %ld\n", (buffer->words[index]).s, arr_word_pos[index].key, arr_word_pos[index].num);
 
         if (arr_word_pos[index].num == 0)
@@ -21,22 +27,42 @@ size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buf
 size_t find_word_in_table (char *word, size_t key, hash_table *table) {
 
     size_t index = 0;
+    // (table->arr + key)->head = (node *)calloc (1,sizeof(node));
+    // (table->arr + key)->head->next = (node *)calloc (1,sizeof(node));
     node  *ptr = (table->arr + key)->head;
-  
+    // (table->arr + key)->head->word.s = "KEKKKKK";
+    // char *word1 = "KEKKKKK";
+
+    // printf ("%p\n", ptr->next);
+    // size_t ret = find_word (word, key, table);
+    // printf ("RET: \t %ld\n", ret);
+    // return ret;
+    // assert (0);
+
+
     while (ptr != nullptr) {
 
         ++index;
 
-        // if (strcmp (ptr->word.s, word) == 0) // NO_OPT
+#ifndef opt_strcmp_asm
+        if (strcmp (ptr->word.s, word) == 0) // NO_OPT
+#else
         if (r_strcmp (ptr->word.s, word) == 0)  // OPT: asm func
+#endif
+
             break;
         ptr = ptr->next;
     }
 
-    if (ptr != nullptr)
+    if (ptr != nullptr) {
+        // printf ("OUTPUT: \t %ld\n", index);
         return index;
-    else
+    }
+
+    else {
+        // printf ("OUTPUT \t 0\n");
         return 0;
+    }
 }
 
 
@@ -84,8 +110,15 @@ void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (void
 
     for (int index = 0; index < buffer->num_of_words; ++index) {
         
-        int hash = hash_func ((buffer->words + index)->s, (buffer->words + index)->len);
+        int hash = hash_func ((buffer->words + index)->s, (buffer->words + index)->len) % NUM_LISTS;
+        // printf ("KEY: %ld\n", hash);
+
+#ifndef opt_find_word_asm
         if (find_word_in_table ((buffer->words + index)->s, hash, table) == 0)
+#else 
+        if (find_word ((buffer->words + index)->s, hash, table) == 0)
+#endif
+
             insert_in_list (table, hash, (buffer->words + index)->s);
     }
 }
@@ -112,7 +145,6 @@ void words_arr_fill (text *buffer) {
         while (isalnum (*end_wrd))
             ++end_wrd;
 
-
         buffer->words[buffer->num_of_words].s = strt_wrd;
         buffer->words[buffer->num_of_words].len = end_wrd - strt_wrd;
         ++buffer->num_of_words;
@@ -122,13 +154,8 @@ void words_arr_fill (text *buffer) {
 
         *end_wrd = '\0';
         end_wrd ++;
-        strt_wrd = end_wrd;
-        
+        strt_wrd = end_wrd;   
     }
-    
-    // for (int index = 0; index < buffer->num_of_words - 1; ++index)
-    //     printf ("%s\n", *(buffer->words + index));
-    // puts ("\nEND of words\n");
 }
 
 
@@ -225,13 +252,11 @@ size_t get_file_size (FILE *in) {
 }
 
 
-// GRAPHVIZ IMPLEMENTATION
-
 void graph (hash_table *table) {
 
     assert (table != nullptr);
 
-    FILE *dump = fopen ("dump.txt", "wb");
+    FILE *dump = fopen ("graphs/dump.txt", "wb");
     if (dump == nullptr) {
         perror ("COULDNT OPEN FILE");
         assert (0);
@@ -244,10 +269,8 @@ void graph (hash_table *table) {
 
         node *ptr = (*(table->arr + key)).head;
 
-        // fprintf (dump, "\"%p\" [shape=oval];\n", table + key);
         if (ptr != nullptr)
             fprintf (dump, "\"%p\" [label=\"%ld\"]\n", table + key, key);
-        // fprintf (dump, "\"%p\" [style=filled,color=\"hotpink\"];", table + key);
 
         while (ptr != nullptr) {
             fprintf (dump, "\"%p\" [label = \"%s\" ]\n ", ptr, ptr->word.s);
@@ -265,7 +288,10 @@ void graph (hash_table *table) {
     fputs ("}", dump);
     fclose (dump);
 
-    system ("dot -Tpng dump.txt -o graph.png");
-    system (" export DISPLAY=\"$(grep nameserver /etc/resolv.conf | sed 's/nameserver //'):0\" ");
-    system ("shotwell graph.png");
+    if (system ("dot -Tpng graphs/dump.txt -o graphs/graph.png") != 0)
+        assert (0);
+    if (system (" export DISPLAY=\"$(grep nameserver /etc/resolv.conf | sed 's/nameserver //'):0\" ") != 0)
+        assert (0);
+    if (system ("shotwell graphs/graph.png") != 0)
+        assert (0);
 }

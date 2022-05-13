@@ -1,5 +1,5 @@
-#include "hash_func.hpp"
-#include "crctable.hpp"
+#include ".h/hash_func.hpp"
+#include ".h/crctable.hpp"
 
 size_t hash_crc_32 (void *ptr, size_t len) {
     
@@ -12,7 +12,7 @@ size_t hash_crc_32 (void *ptr, size_t len) {
     for (int symb = 0; symb < len; symb++)
         crc = CRCTable [(crc ^ *(word + symb)) & 0xFF] ^ (crc >> 8);
  
-    return crc % NUM_LISTS; 
+    return crc % NUM_LISTS;
 }
 
 

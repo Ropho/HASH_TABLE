@@ -8,7 +8,15 @@
 // #define HASH_ROL
 #define HASH_CRC_32
 
-// #define HASH_R_HASH
+
+#define opt_strcmp_asm
+#define opt_find_word_asm
+#define opt_hash_asm
+
+
+#define TEXT
+// #define MEM
+// #define HAMLET
 
 #define NUM_LISTS 1024
 #define NUM_ELEM_IN_LIST 20

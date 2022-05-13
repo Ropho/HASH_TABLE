@@ -91,5 +91,5 @@ size_t find_word_in_table (char *word, size_t key, hash_table *table);
 
 extern "C"  size_t find_word (char *word, size_t key, hash_table *table);
 extern "C"  size_t r_strcmp (char *first, char *second);
-
+extern "C"  size_t hash_crc_32_asm (void *ptr, size_t len);
 #endif

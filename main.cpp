@@ -1,14 +1,18 @@
-#include "hash_table_func.hpp"
-
-
+#include ".h/hash_table_func.hpp"
 
 
 int main (void) {
 
 /////////////////////////////////////////////////
-    FILE *in   = fopen ("words.txt", "rb");
-    // FILE *in   = fopen ("HAMLET.txt", "rb");
-    // FILE *in   = fopen ("mem.txt", "rb");
+#ifdef TEXT
+    FILE *in   = fopen ("texts/words.txt", "rb");
+#elif defined HAMLET
+    FILE *in   = fopen ("texts/HAMLET.txt", "rb");
+#elif defined MEM
+    FILE *in   = fopen ("texts/mem.txt", "rb");
+#endif
+
+
     if (in == nullptr) {
         perror ("OPEN FILE ERROR");
         return OPEN_FILE_ERROR;
@@ -41,7 +45,11 @@ int main (void) {
 #elif defined HASH_ROL
     hash_table_fill (table, buffer, hash_rol);
 #elif defined HASH_CRC_32
-    hash_table_fill (table, buffer, hash_crc_32);
+    #ifndef opt_hash_asm
+        hash_table_fill (table, buffer, hash_crc_32);
+    #else
+        hash_table_fill (table, buffer, hash_crc_32_asm);
+    #endif
 #else
     assert (0);
 #endif
@@ -56,8 +64,10 @@ int main (void) {
     
     for (int index = 0; index < NUM_TESTS; ++index) {
 
-        #if defined HASH_CRC_32
+        #ifndef opt_hash_asm
             if (find_text_in_table (arr_word_pos, table, buffer, hash_crc_32) == 0) {
+        #else
+            if (find_text_in_table (arr_word_pos, table, buffer, hash_crc_32_asm) == 0) {
         #endif
             perror ("WORD NOT FOUND");
             return HASH_TABLE_NOT_FOUND_WORD;
@@ -68,7 +78,7 @@ int main (void) {
     // graph (table);
 
 ///////////////////////////////////////////////////////////////////////
-    // FILE *csv = fopen ("excel.csv", "wb");
+    // FILE *csv = fopen ("graphs/excel.csv", "wb");
     // print_in_file (table, csv);
     // fclose (csv);
 ///////////////////////////////////////////////////////////////////////
