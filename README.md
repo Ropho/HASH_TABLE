@@ -123,7 +123,7 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at are three
   * > called 1.9 mil
   > Was rewritten in asm. Function self time reduced in 2 times (42.000.000 -> 22.900.000). Got no boost in overall time. Probably, the function wasn't the "bottle neck" in our program. Gonna look through other functions. Total instruction fetch = 65.600.000
 
-
+```asm
 		r_strcmp:
 
 
@@ -157,7 +157,7 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at are three
 		.not_equal_less:
 			mov rax, -1
 			ret
-
+```
 <img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="775" height="853"/>
 
 
