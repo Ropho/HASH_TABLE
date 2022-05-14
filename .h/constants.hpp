@@ -10,7 +10,7 @@
 
 
 #define opt_strcmp_asm
-#define opt_find_word_asm
+// #define opt_find_word_asm
 #define opt_hash_asm
 
 

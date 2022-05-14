@@ -7,57 +7,56 @@ section .text
 
 find_word:
 
-    push rbp
-
-    mov rbp, rsp    ; rbp points on "ret"
-
-    push rdi            ; first param  rbp - 8
-    push rsi            ; second param rbp - 16
-    push rdx            ; third param  rbp - 24
-    
-    push rbx
     push rcx
-
-
-    mov rcx, 0d         ; index = 0
-
-    mov rbx, [rbp - 24] ;table    
-    add rbx, 16d        ;table->arr
-
-    mov rax, [rbp - 16] ;rax = key
-    mov rdx, 24d 
-    mul rdx             ;rax = key * 24
+    ; push rdi            ; first param  rbp - 8
+    ; push rsi            ; second param rbp - 16
+    ; push rdx            ; third param  rbp - 24
     
-    mov rbx, qword [rbx]
-    add rbx, rax         ;rbx = table->arr + key
-    mov rbx, qword [rbx] ;(table->arr + key)->head
-                         ;rbx = ptr
-    mov r8, rbx
-    
+    xor rcx, rcx         ; index = 0
+
+    ; add rdx, 16d        ;rdx = table->arr
+
+    ; push rdx
+    ;     mov rax, rsi        ;rsi = key
+    ;     mov rdx, 24d 
+    ;     mul rdx             ;rax = key * 24
+    ; pop rdx
+
+    mov rdx, [rdx + 8]
+
+    ; add rdx, rax          ;rdx = table->arr + key
+                            
+                            ;(table->arr + key)->head
+    ; shr rsi, 8
+    shl rsi, 5          ;rsi = rsi * 32
+                        
+                        ;rdx = ptr    
+    mov rdx, qword [rdx + rsi]
 .not_nullptr:
 
-    cmp rbx, 0d
+    cmp rdx, 0d
     je .nullptr
     
     inc rcx     ;++index
 
-    mov rdi, qword [rbx]           ;ptr->word.s
-    mov rsi, qword [rbp - 8]       ;word
-    call r_strcmp
-
+    mov rsi, qword [rdx]        ;rsi = ptr->word.s
+                                ;rdi = word
+    push rdi
+    push rsi
+        call r_strcmp
+    pop rsi
+    pop rdi
 
     cmp rax, 0d
     je .out
 
-    ; add rbx, 16
-    mov rbx, qword [rbx + 16]
+    mov rdx, qword [rdx + 16]
         
-
     jmp .not_nullptr
 
 
 .out:
-    cmp rbx, 0d
+    cmp rdx, 0d
     je .nullptr
     jmp .not_null
 
@@ -67,17 +66,11 @@ find_word:
     
 .not_null:
     mov rax, rcx
-
     jmp .to_end
 
 .to_end:
 
     pop rcx
-    pop rbx
-    pop rdx
-    pop rsi
-    pop rdi
-    pop rbp
 
     ret
 
@@ -86,8 +79,8 @@ find_word:
 
 ;----------------------------------------------------------------
 ;ENTRY: rdi = offset string1, rsi = offset string2
-;OUT: 
-;DESTR: 
+;OUT: rax
+;DESTR: rsi, rdi
 
 r_strcmp:
 
@@ -144,69 +137,32 @@ r_strlen:
 	jmp .increment
 
 
-.end_of_increment:		
-	ret	
+.end_of_increment:
+	ret
 
 
 
 hash_crc_32_asm:
-                  
-                push rbx
-                push rcx
-                
-                
-                                    ;unsigned long res = 0xFFFFFFFF; 
-                mov ebx, 0xFFFFFFFF          ; rbx = res
+    
+    mov eax, 0FFFFFFFFh
 
-                mov rcx, rsi
-                mov rsi, rdi
+.repeat:
+    cmp byte [rdi], 0h  ;rdi = word
+    je .output
 
-                add rcx, 4
-                xor rax, rax                 ; int index = 0 = rax
-                xor rdx, rdx                 ; int symbol = rdx;
-                xor r8, r8                   ; int i = 0;
+    movzx r10d, byte [rdi]
 
-loopStr:        cmp r8, rcx                  ; i < length + 4
-                jae endOfProc                ; break
+    crc32 eax, r10b
 
-                mov rax, rbx                 ;
-                shr rax, 24                  ; index = (res >> 24) & 0xFF;
-                and rax, 0xFF                ; 
+    inc rdi
+    jmp .repeat
 
-                sub rcx, 4                   ;
-                cmp r8, rcx                  ; if (i < length)
-                jae zero_symbol              ;       symbol = *(str1 + i); 
-                                             ; else
-                                             ;      symbol = 0x0;
-
-                mov dl, byte [rsi]
-
-                jmp continue
-
-zero_symbol:    xor rdx, rdx
-
-continue:       shl rbx, 8                              ; res = (res << 8) | symbol;
-                                                        ; res ^= table1[index];
-                or rbx, rdx 
-
-                xor rbx, [crctable + rax * 4]
-
-                inc r8
-                inc rsi
-                add rcx, 4
-                jmp loopStr
-
-endOfProc:
-
-                mov rax, rbx
-
-                pop rcx
-                pop rbx
-
-                ret
+.output:
+    not eax
+    ret
 
 
-ahash_crc_32_asm:
+r_hash_crc_32_asm:
 
     ; rdi - first param
     ; rsi - second param    

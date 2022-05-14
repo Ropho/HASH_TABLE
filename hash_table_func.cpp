@@ -5,7 +5,7 @@ size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buf
 
     for (int index = 0; index < buffer->num_of_words; ++index) {
 
-        size_t key = hash_func ((buffer->words[index]).s, (buffer->words[index]).len);
+        size_t key = hash_func ((buffer->words[index]).s, (buffer->words[index]).len) % NUM_LISTS;
         // size_t key = hash_crc_32_asm ((buffer->words[index]).s, (buffer->words[index]).len) % NUM_LISTS;
 
         arr_word_pos[index].key = key;
@@ -24,22 +24,12 @@ size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buf
     return 1;
 }
 
+
 size_t find_word_in_table (char *word, size_t key, hash_table *table) {
 
     size_t index = 0;
-    // (table->arr + key)->head = (node *)calloc (1,sizeof(node));
-    // (table->arr + key)->head->next = (node *)calloc (1,sizeof(node));
     node  *ptr = (table->arr + key)->head;
-    // (table->arr + key)->head->word.s = "KEKKKKK";
-    // char *word1 = "KEKKKKK";
-
-    // printf ("%p\n", ptr->next);
-    // size_t ret = find_word (word, key, table);
-    // printf ("RET: \t %ld\n", ret);
-    // return ret;
-    // assert (0);
-
-
+   
     while (ptr != nullptr) {
 
         ++index;
@@ -49,18 +39,15 @@ size_t find_word_in_table (char *word, size_t key, hash_table *table) {
 #else
         if (r_strcmp (ptr->word.s, word) == 0)  // OPT: asm func
 #endif
-
             break;
+      
         ptr = ptr->next;
     }
 
     if (ptr != nullptr) {
-        // printf ("OUTPUT: \t %ld\n", index);
         return index;
     }
-
     else {
-        // printf ("OUTPUT \t 0\n");
         return 0;
     }
 }
@@ -189,7 +176,6 @@ hash_table* ctor (void) {
 
     hash_table *new_table = (hash_table*)calloc(1, sizeof (hash_table));
     
-    new_table->error    = 0;
     new_table->capacity = NUM_LISTS;
 
     new_table->arr = (node_ptr*)calloc (new_table->capacity, sizeof (node_ptr));
@@ -208,7 +194,6 @@ void dtor (hash_table **table) {
     assert (*table != nullptr);
 
     (*table)->capacity  = 0;
-    (*table)->error     = 0;
 
     clear (*table);         //delete inner nodes
 

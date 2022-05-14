@@ -41,14 +41,14 @@ typedef struct node_ptr {
     
     size_t num_of_elem = 0;
 
+    size_t error = 0;
+
 }node_ptr;
 
 
 typedef struct hash_table {
 
     size_t capacity = NUM_LISTS;
-
-    size_t error = 0;
 
     node_ptr *arr = nullptr;
 
