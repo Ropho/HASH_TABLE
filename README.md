@@ -113,15 +113,15 @@ Compile
 
   > **Average per 10 measurements is taken.**
 
-Have a look at the kcachegrind window. Funcs what we wil be looking at:
+Have a look at the kcachegrind window. Funcs what we wil be looking at are three at the top of the screenshot.
 
-<img src="/pic/no_opt.png" alt="NOOPT" title="NOOPT" width="682" height="835"/>
+<img src="/pic/no_opt.png" alt="NOOPT" title="NOOPT" width="785" height="870"/>
 
 
 + strcmp_avx_2
-  * > self 82.500.0000
-  * > called 3.700.000 times
-  > Was rewritten in asm. Function self time reduced in 2 times (44.000.000 -> 22.000.000). Got no boost in overall time. Probably, the function wasn't the "bottle neck" in our program. Gonna look through other functions.
+  * > self 42 mil
+  * > called 1.9 mil
+  > Was rewritten in asm. Function self time reduced in 2 times (42.000.000 -> 22.900.000). Got no boost in overall time. Probably, the function wasn't the "bottle neck" in our program. Gonna look through other functions. Total instruction fetch = 65.600.000
 
 
 		r_strcmp:
@@ -158,13 +158,13 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 			mov rax, -1
 			ret
 
-<img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="682" height="835"/>
+<img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="775" height="853"/>
 
 
 + find_word_in_table
-  * > self 55.000.000
-  * > called 300.000 times
-  > Was rewritten in asm. Unfortunately, didnt give any boost, vice versa we've got 3 mil (self) self time increase =(. O2 is much better than than this asm implementation.
+  * > self 19 mil
+  * > called 147 thous times
+  > Was rewritten in asm. Unfortunately, didnt give any boost, vice versa we've got 5 mil (self) self time increase =(. O2 is much better than than this asm implementation. So we won't be using that asm function.
 
 		find_word:
 
@@ -235,15 +235,39 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
 		    ret
 
-
+<img src="/pic/opt_2.png" alt="2OPT" title="2OPT" width="790" height="876"/>
 
 
 
 + hash_crc_32
-  * > self 15% (45.000.000)
-  * > called 300.000 times  
+  * > self 10.4 mil
+  * > called 150.000 times 
+
+  > Was rewritten in asm using avx crc32 func. Got decrease from 10 mil to 7.3 mil self time. Total fetch instruction 62 mil.
 
 
+		hash_crc_32_asm:
+
+		    mov eax, 0FFFFFFFFh
+
+		.repeat:
+		    cmp byte [rdi], 0h  ;rdi = word
+		    je .output
+
+		    movzx r10d, byte [rdi]
+
+		    crc32 eax, r10b
+
+		    inc rdi
+		    jmp .repeat
+
+		.output:
+		    not eax
+		    ret
+
+
+
+<img src="/pic/opt_3.png" alt="3OPT" title="3OPT" width="796" height="865"/>
 
 
 |            | no opt   | no opt O2|  opt 1|
