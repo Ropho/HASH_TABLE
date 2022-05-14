@@ -117,13 +117,15 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
 <img src="/pic/no_opt.png" alt="NOOPT" title="NOOPT" width="682" height="835"/>
 
-+ strcmp_avx_2 (even though it's avx2 we can rewrite it with avx ourselves)
-  * > self 27% (82.500.0000)
+
++ strcmp_avx_2
+  * > self 82.500.0000
   * > called 3.700.000 times
   > Was rewritten in asm. Function self time reduced in 2 times (44.000.000 -> 22.000.000). Got no boost in overall time. Probably, the function wasn't the "bottle neck" in our program. Gonna look through other functions.
 
 
 		r_strcmp:
+
 
 		.check_ASCII:
 
@@ -160,10 +162,78 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 
 
 + find_word_in_table
-  * > self 18% (55.000.000)
+  * > self 55.000.000
   * > called 300.000 times
-  > Was rewritten in asm. 
+  > Was rewritten in asm. Unfortunately, didnt give any boost, vice versa we've got 3 mil (self) self time increase =(. O2 is much better than than this asm implementation.
 
+		find_word:
+
+		    push rcx
+		    ; push rdi            ; first param  rbp - 8
+		    ; push rsi            ; second param rbp - 16
+		    ; push rdx            ; third param  rbp - 24
+
+		    xor rcx, rcx         ; index = 0
+
+		    ; add rdx, 16d        ;rdx = table->arr
+
+		    ; push rdx
+		    ;     mov rax, rsi        ;rsi = key
+		    ;     mov rdx, 24d 
+		    ;     mul rdx             ;rax = key * 24
+		    ; pop rdx
+
+		    mov rdx, [rdx + 8]
+
+		    ; add rdx, rax          ;rdx = table->arr + key
+
+					    ;(table->arr + key)->head
+		    ; shr rsi, 8
+		    shl rsi, 5          ;rsi = rsi * 32
+
+					;rdx = ptr    
+		    mov rdx, qword [rdx + rsi]
+		.not_nullptr:
+
+		    cmp rdx, 0d
+		    je .nullptr
+
+		    inc rcx     ;++index
+
+		    mov rsi, qword [rdx]        ;rsi = ptr->word.s
+						;rdi = word
+		    push rdi
+		    push rsi
+			call r_strcmp
+		    pop rsi
+		    pop rdi
+
+		    cmp rax, 0d
+		    je .out
+
+		    mov rdx, qword [rdx + 16]
+
+		    jmp .not_nullptr
+
+
+		.out:
+		    cmp rdx, 0d
+		    je .nullptr
+		    jmp .not_null
+
+		.nullptr:
+		    mov rax, 0d
+		    jmp .to_end
+
+		.not_null:
+		    mov rax, rcx
+		    jmp .to_end
+
+		.to_end:
+
+		    pop rcx
+
+		    ret
 
 
 
@@ -172,6 +242,9 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at:
 + hash_crc_32
   * > self 15% (45.000.000)
   * > called 300.000 times  
+
+
+
 
 |            | no opt   | no opt O2|  opt 1|
 |:----------:|:--------:|:--------:|:-----:|
