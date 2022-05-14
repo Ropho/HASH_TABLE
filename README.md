@@ -124,39 +124,39 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at are three
   > Was rewritten in asm. Function self time reduced in 2 times (42.000.000 -> 22.900.000). Got no boost in overall time. Probably, the function wasn't the "bottle neck" in our program. Gonna look through other functions. Total instruction fetch = 65.600.000
 
 ```asm
-		r_strcmp:
+r_strcmp:
 
 
-		.check_ASCII:
+.check_ASCII:
 
-			mov ah, byte [rdi]
+	mov ah, byte [rdi]
 
-			mov al, byte [rsi]
+	mov al, byte [rsi]
 
-			cmp ah, al
+	cmp ah, al
 
-			ja .not_equal_greater
-			jb .not_equal_less
+	ja .not_equal_greater
+	jb .not_equal_less
 
-			inc rdi
-			inc rsi
+	inc rdi
+	inc rsi
 
-			cmp ah, 0d
-			je .equal
+	cmp ah, 0d
+	je .equal
 
-			jmp .check_ASCII
+	jmp .check_ASCII
 
-		.equal:
-			mov rax, 0
-		    ret
+.equal:
+	mov rax, 0
+    ret
 
-		.not_equal_greater:
-			mov rax, 1	
-			ret
+.not_equal_greater:
+	mov rax, 1	
+	ret
 
-		.not_equal_less:
-			mov rax, -1
-			ret
+.not_equal_less:
+	mov rax, -1
+	ret
 ```
 <img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="775" height="853"/>
 
@@ -166,75 +166,61 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at are three
   * > called 147 thous times
   > Was rewritten in asm. Unfortunately, didnt give any boost, vice versa we've got 5 mil (self) self time increase =(. O2 is much better than than this asm implementation. So we won't be using that asm function.
 
-		find_word:
+```asm
+find_word:
 
-		    push rcx
-		    ; push rdi            ; first param  rbp - 8
-		    ; push rsi            ; second param rbp - 16
-		    ; push rdx            ; third param  rbp - 24
+    push rcx
+    
+    xor rcx, rcx         ; index = 0
 
-		    xor rcx, rcx         ; index = 0
+    mov rdx, [rdx + 8]
 
-		    ; add rdx, 16d        ;rdx = table->arr
+    shl rsi, 5          ;rsi = rsi * 32
 
-		    ; push rdx
-		    ;     mov rax, rsi        ;rsi = key
-		    ;     mov rdx, 24d 
-		    ;     mul rdx             ;rax = key * 24
-		    ; pop rdx
+			;rdx = ptr    
+    mov rdx, qword [rdx + rsi]
+.not_nullptr:
 
-		    mov rdx, [rdx + 8]
+    cmp rdx, 0d
+    je .nullptr
 
-		    ; add rdx, rax          ;rdx = table->arr + key
+    inc rcx     ;++index
 
-					    ;(table->arr + key)->head
-		    ; shr rsi, 8
-		    shl rsi, 5          ;rsi = rsi * 32
+    mov rsi, qword [rdx]        ;rsi = ptr->word.s
+				;rdi = word
+    push rdi
+    push rsi
+	call r_strcmp
+    pop rsi
+    pop rdi
 
-					;rdx = ptr    
-		    mov rdx, qword [rdx + rsi]
-		.not_nullptr:
+    cmp rax, 0d
+    je .out
 
-		    cmp rdx, 0d
-		    je .nullptr
+    mov rdx, qword [rdx + 16]
 
-		    inc rcx     ;++index
-
-		    mov rsi, qword [rdx]        ;rsi = ptr->word.s
-						;rdi = word
-		    push rdi
-		    push rsi
-			call r_strcmp
-		    pop rsi
-		    pop rdi
-
-		    cmp rax, 0d
-		    je .out
-
-		    mov rdx, qword [rdx + 16]
-
-		    jmp .not_nullptr
+    jmp .not_nullptr
 
 
-		.out:
-		    cmp rdx, 0d
-		    je .nullptr
-		    jmp .not_null
+.out:
+    cmp rdx, 0d
+    je .nullptr
+    jmp .not_null
 
-		.nullptr:
-		    mov rax, 0d
-		    jmp .to_end
+.nullptr:
+    mov rax, 0d
+    jmp .to_end
 
-		.not_null:
-		    mov rax, rcx
-		    jmp .to_end
+.not_null:
+    mov rax, rcx
+    jmp .to_end
 
-		.to_end:
+.to_end:
 
-		    pop rcx
+    pop rcx
 
-		    ret
-
+    ret
+```
 <img src="/pic/opt_2.png" alt="2OPT" title="2OPT" width="790" height="876"/>
 
 
@@ -245,26 +231,26 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at are three
 
   > Was rewritten in asm using avx crc32 func. Got decrease from 10 mil to 7.3 mil self time. Total fetch instruction 62 mil.
 
+```asm
+hash_crc_32_asm:
 
-		hash_crc_32_asm:
+    mov eax, 0FFFFFFFFh
 
-		    mov eax, 0FFFFFFFFh
+.repeat:
+    cmp byte [rdi], 0h  ;rdi = word
+    je .output
 
-		.repeat:
-		    cmp byte [rdi], 0h  ;rdi = word
-		    je .output
+    movzx r10d, byte [rdi]
 
-		    movzx r10d, byte [rdi]
+    crc32 eax, r10b
 
-		    crc32 eax, r10b
+    inc rdi
+    jmp .repeat
 
-		    inc rdi
-		    jmp .repeat
-
-		.output:
-		    not eax
-		    ret
-
+.output:
+    not eax
+    ret
+```
 
 
 <img src="/pic/opt_3.png" alt="3OPT" title="3OPT" width="796" height="865"/>
