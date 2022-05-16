@@ -38,6 +38,7 @@ In this part wi will be analyzing 6 different hash functions based on:
 
   * Brief description
   > function is a very bad example of a hash function due to its multiple number of collisions. 
+  > **X SCALE = 255**
 
 <img src="/pic/ret1.png" alt="RET1" title="RET1" width="720" height="480"/>
 
@@ -45,13 +46,14 @@ In this part wi will be analyzing 6 different hash functions based on:
   
   * Brief description
   > function is better than *RETURN 1*, as it can give out multiple values (not only 1), but has a small variety of keys (only 255 of desired 1024) and very high percent of collisions, so it cannot be a good hash function. 
-
+  > **X SCALE = 255**
 <img src="/pic/first_ASCII.png" alt="first_ASCII" title="first_ASCII" width="720" height="480"/>
 
 ### 3.  **Len of word**
   
   * Brief description
   > Like the previous function it has a small variety of keys (only 255 of desired 1024) and very high percent of collisions cause words lengths are rather limited, so it cannot be considered a good hash function. 
+  > **X SCALE = 255**
 
 <img src="/pic/len.png" alt="LEN" title="LEN" width="720" height="480"/>
 
@@ -59,6 +61,7 @@ In this part wi will be analyzing 6 different hash functions based on:
   
   * Brief description
   > Is a better function than previous ones. Covers all the desired 1024 keys, but has some problems with even distribution (has maximums and minimums which are easily distinguished, so has up to 80 elements in a list (desired 20). Still cannot be a good hash function.
+  > **X SCALE = 1024**
 
 <img src="/pic/sum.png" alt="SUM" title="SUM" width="720" height="480"/>
 
@@ -66,14 +69,16 @@ In this part wi will be analyzing 6 different hash functions based on:
   
   * Brief description
   > Better function than previous ones: has a variety of keys and rather low maximum number of elements in a list. But it has some empty spaces (not full covering) -> BAD hash function.  
-
+  > **X SCALE = 1024**
+  > 
 <img src="/pic/rol.png" alt="ROL" title="ROL" width="720" height="480"/>
 
 ### 6.  **CRC 32**
   
   * Brief description
   > The best of given hash functions: **high variety** of keys, **very low** (desired 20-30) maximum number of elements in a list and **even distribution** of elements in lists.
-
+  > **X SCALE = 1024**
+  > 
 <img src="/pic/crc32.png" alt="CRC32" title="CRC32" width="720" height="480"/>
 
 Dispersion values for different hash functions:
@@ -353,9 +358,9 @@ find_word:
 
 |            | no opt   | no opt O2|strcmp asm|strcmp asm (inl)|hash asm|hash asm (inl)|
 |:----------:|:--------:|:--------:|:--------:|:--------------:|:------:|:------------:|
-|real (secs) |0,197     |0,185     |0,181     |0,18	       |0,177   |
-|user (secs) |0,195     |0,185     |0,179     |0,18            |0,176   |
-|sys  (secs) |0,002     |0         |0         |0               |0,002   |
+|real (secs) |0,197     |0,185     |0,181     |0,18	       |0,177   |0,172         |
+|user (secs) |0,195     |0,185     |0,179     |0,18            |0,176   |0,171         |
+|sys  (secs) |0,002     |0         |0         |0               |0,002   |0,001         |
 
 ## TOTAL INCREASE (TOTAL FETCH INSTRUCTION COST):
 284 mil -> 191 mil. (33%)
