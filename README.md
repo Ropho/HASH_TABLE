@@ -1,6 +1,14 @@
 HASH_TABLE
 ==========
 
+## CONTENTS
+
+[1.Intro](#Intro)
+[1.HASH FUCNTION ANALYSIS](#HASH FUCNTION ANALYSIS)
+
+
+# Intro
+
 ## TABLE CAPACITY
   + > We wanna have max **20 elements** in 1 list with a good hash func, 
   + > so in accordance with having a text with **24000 Unique words**
@@ -19,7 +27,7 @@ HASH_TABLE
   > 5. clearing the table
 
 
-# Before optimizations analysis:
+# HASH FUNCTION ANALYSIS:
 
 
 Compile
