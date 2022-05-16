@@ -363,4 +363,4 @@ find_word:
 |sys  (secs) |0,002     |0         |0         |0               |0,002   |0,001         |
 
 ## TOTAL INCREASE (TOTAL FETCH INSTRUCTION COST):
-284 mil -> 191 mil. (33%)
+### **284 mil -> 191 mil. (33%)**
