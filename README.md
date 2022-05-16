@@ -14,18 +14,18 @@ HASH_TABLE
 
 # Intro
 
-The task of this project was to: 
-1. study the chain method of constructing hash table
-2. compare different hash functions
-3. optimize the hash function using previously learnt methods.
+Tasks of this project was: 
+1. To study the chain method of constructing hash table
+2. To compare different hash functions
+3. To optimize the hash function using previously learnt methods
 
 
 # ANALYSIS:
 
 In this part wi will be analyzing 6 different hash functions based on:
-1. number of collisions.
-2. variety of keys.
-3. even distribution (whithout maximums and minmums)
+1. Number of collisions
+2. Variety of keys
+3. Even distribution (whithout maximums and minmums)
 
 
 ## Compile
@@ -37,7 +37,7 @@ In this part wi will be analyzing 6 different hash functions based on:
 ### 1.  **RETURN 1**
 
   * Brief description
-  > function is a very bad example of a hash function due to its multiple number of collisions. 
+  > Function is a very bad example of a hash function due to its multiple number of collisions.
 
   > **X SCALE = 255**
 
@@ -46,7 +46,7 @@ In this part wi will be analyzing 6 different hash functions based on:
 ### 2.  **RETURN first ASCII**
   
   * Brief description
-  > function is better than *RETURN 1*, as it can give out multiple values (not only 1), but has a small variety of keys (only 255 of desired 1024) and very high percent of collisions, so it cannot be a good hash function. 
+  > Function is better than *RETURN 1*, as it can give out multiple values (not only 1), but has a small variety of keys (only 255 of desired 1024) and very high percent of collisions, so it cannot be a good hash function. 
 
   > **X SCALE = 255**
 <img src="/pic/first_ASCII.png" alt="first_ASCII" title="first_ASCII" width="720" height="480"/>
@@ -87,7 +87,7 @@ In this part wi will be analyzing 6 different hash functions based on:
  
 <img src="/pic/crc32.png" alt="CRC32" title="CRC32" width="720" height="480"/>
 
-Dispersion values for different hash functions:
+### Dispersion values for different hash functions:
 
 | hash func   | dispersion |
 |-------------|------------|
