@@ -143,7 +143,9 @@ In this part wi will be analyzing 6 different hash functions based on:
 	
 + More precise way to measure **Execution time** is to look at **Total instruction fetch cost** in kcachegrind.
 	
-Have a look at the kcachegrind window. Funcs what we wil be looking at are three at the top of the screenshot. **TOTAL INSTRUCTION FETCH COST: 284 mil**
+Have a look at the kcachegrind window. Funcs what we wil be looking at are three at the top of the screenshot. 
+
+**TOTAL INSTRUCTION FETCH COST: 284 mil**
 
 <img src="/pic/no_opt.png" alt="NOOPT" title="NOOPT" width="786" height="861"/>
 
@@ -152,7 +154,9 @@ Have a look at the kcachegrind window. Funcs what we wil be looking at are three
 + strcmp_avx_2
   * > self 148 mil
   * > called 6,6 mil times
-  > Was rewritten in asm. Function self time reduced in 1.5 times (148 mil -> 85 mil). Total instruction fetch reduced form 284 mil -> 214 mil (25%).
+  > Was rewritten in asm. Function self time reduced in 1.5 times (148 mil -> 85 mil). 
+
+  > Total instruction fetch reduced form 284 mil -> 214 mil (25%).
 
 
 ```asm
@@ -192,7 +196,9 @@ r_strcmp:
 ```
 <img src="/pic/opt_1.png" alt="1OPT" title="1OPT" width="796" height="865"/>
 
-  > Add inline assembly to avoid *calls & rets*. Function self time reduced in 1.5 times (148 mil -> 85 mil). Total instruction fetch reduced form 214 mil -> 202 mil (6%).
+  > Add inline assembly to avoid *calls & rets*. Function self time reduced in 1.5 times (148 mil -> 85 mil). 
+
+  > Total instruction fetch reduced form 214 mil -> 202 mil (6%).
 
 ```asm
 
@@ -234,7 +240,9 @@ r_strcmp:
   * > self 36,5 mil
   * > called 515.000 times 
 
-  > Was rewritten in asm using crc32 func. Got decrease from 36,5 mil to 25,7 mil self time. Total fetch instruction 202 mil -> 191 mil (5,4%)
+  > Was rewritten in asm using crc32 func. Got decrease from 36,5 mil to 25,7 mil self time. 
+
+  > Total fetch instruction 202 mil -> 191 mil (5,4%)
 
 ```asm
 hash_crc_32_asm:
@@ -261,7 +269,9 @@ hash_crc_32_asm:
 <img src="/pic/opt_3.png" alt="3OPT" title="3OPT" width="792" height="850"/>
 
 
-  > Add inline assembly to avoid *calls & rets*. Total instruction fetch reduced form 191 mil -> 189 mil (1%). Bad optimization, cause not so many calls of hash (unlike strcmp).
+  > Add inline assembly to avoid *calls & rets*. 
+
+  > Total instruction fetch reduced form 191 mil -> 189 mil (1%). Bad optimization, cause not so many calls of hash (unlike strcmp).
 
 ```asm
 
