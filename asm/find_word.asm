@@ -8,26 +8,11 @@ section .text
 find_word:
 
     push rcx
-    ; push rdi            ; first param  rbp - 8
-    ; push rsi            ; second param rbp - 16
-    ; push rdx            ; third param  rbp - 24
-    
+   
     xor rcx, rcx         ; index = 0
-
-    ; add rdx, 16d        ;rdx = table->arr
-
-    ; push rdx
-    ;     mov rax, rsi        ;rsi = key
-    ;     mov rdx, 24d 
-    ;     mul rdx             ;rax = key * 24
-    ; pop rdx
-
+ 
     mov rdx, [rdx + 8]
 
-    ; add rdx, rax          ;rdx = table->arr + key
-                            
-                            ;(table->arr + key)->head
-    ; shr rsi, 8
     shl rsi, 5          ;rsi = rsi * 32
                         
                         ;rdx = ptr    

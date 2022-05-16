@@ -1,19 +1,24 @@
 #include ".h/hash_func.hpp"
 #include ".h/crctable.hpp"
 
-size_t hash_crc_32 (void *ptr, size_t len) {
-    
+
+size_t hash_crc_32 (void* ptr, size_t len) {
+
     assert (ptr != nullptr);
+    
+    char *str = (char*)ptr;
 
-    char *word = (char *)ptr;
+    size_t key = 0xFFFFFFFFUL;
 
-    unsigned int crc = 0xFFFFFFFFUL;
+    while (*str != '\0') {
 
-    for (int symb = 0; symb < len; symb++)
-        crc = CRCTable [(crc ^ *(word + symb)) & 0xFF] ^ (crc >> 8);
- 
-    return crc % NUM_LISTS;
+        key = CRCTable[(key ^ *(str)) & 0xFF] ^ (key >> 8);
+        str++;
+    }
+
+    return key;
 }
+
 
 
 size_t hash_rol (void *ptr, size_t len) {

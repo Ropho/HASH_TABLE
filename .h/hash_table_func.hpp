@@ -78,18 +78,22 @@ typedef struct find_info {
 
 hash_table* ctor (void);
 void dtor (hash_table **table);
-text *read_from_file (FILE *in);
+text *read_from_file (FILE *in, size_t *error);
 size_t get_file_size (FILE *in);
-void words_arr_fill (text *buffer);
+
+size_t words_arr_fill (text *buffer);
+
 void find_pos (hash_table *table,  size_t key);
-void graph (hash_table *table);
+size_t graph (hash_table *table);
 void print_in_file (hash_table *table, FILE *csv);
 void clear (hash_table *table);
-void hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t));
+size_t hash_table_fill (hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t));
 size_t find_text_in_table (find_info *arr_word_pos, hash_table *table, text *buffer, size_t (*hash_func) (void *, size_t));
 size_t find_word_in_table (char *word, size_t key, hash_table *table);
 
 extern "C"  size_t find_word (char *word, size_t key, hash_table *table);
 extern "C"  size_t r_strcmp (char *first, char *second);
+inline __attribute__((always_inline)) size_t inl_r_strcmp (char *first, char *second);
+inline __attribute__((always_inline)) size_t inl_hash_crc_32_asm (void *ptr, size_t len);
 extern "C"  size_t hash_crc_32_asm (void *ptr, size_t len);
 #endif

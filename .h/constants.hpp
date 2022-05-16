@@ -1,6 +1,21 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+///////////////////OPTIONS///////////////////////
+
+
+///////////////////GRAPH/////////////////////////
+// #define GRAPH
+
+///////////////////EXCEL/////////////////////////
+// #define EXCEL 
+
+///////////////////CHOOSE DEBUG/NDEBUG///////////
+// #define NDEBUG
+
+///////////////////CHOOSE HASH FUNC//////////////
 // #define HASH_RET_1
 // #define HASH_FIRST_ASCII
 // #define HASH_LEN
@@ -8,29 +23,39 @@
 // #define HASH_ROL
 #define HASH_CRC_32
 
+///////////////////CHOOSE OPT////////////////////
+// #define opt_strcmp_asm
+#define opt_strcmp_asm_inline
 
-#define opt_strcmp_asm
 // #define opt_find_word_asm
-#define opt_hash_asm
 
+// #define opt_hash_asm
+// #define opt_hash_asm_inline
 
+///////////////////CHOOSE TEXT///////////////////
 #define TEXT
 // #define MEM
 // #define HAMLET
 
+///////////////////CHOOSE HASH TABLE PARAM///////
 #define NUM_LISTS 1024
 #define NUM_ELEM_IN_LIST 20
-#define NUM_TESTS 5
+#define NUM_TESTS 20
 
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
 
-// #define NDEBUG
 
 enum ERRORS {
 
     MEM_ALLOC_ERROR = 1,
     OPEN_FILE_ERROR = 2,
     READ_FILE_ERROR = 3,
-    HASH_TABLE_NOT_FOUND_WORD = 4,
+    CLOSE_FILE_ERROR = 4,
+    HASH_TABLE_NOT_FOUND_WORD = 5,
+    ENCODING_ERROR = 6,
+    SYSTEM_COM_ERROR = 7,
 };
 
 

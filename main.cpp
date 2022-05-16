@@ -1,10 +1,11 @@
 #include ".h/hash_table_func.hpp"
 
 
-int main (void) {
+int main (int argc, char **argv) {
 
+    size_t error = 0;
 /////////////////////////////////////////////////
-#ifdef TEXT
+#if defined TEXT
     FILE *in   = fopen ("texts/words.txt", "rb");
 #elif defined HAMLET
     FILE *in   = fopen ("texts/HAMLET.txt", "rb");
@@ -12,75 +13,94 @@ int main (void) {
     FILE *in   = fopen ("texts/mem.txt", "rb");
 #endif
 
-
-    if (in == nullptr) {
+    if (!in) {
         perror ("OPEN FILE ERROR");
         return OPEN_FILE_ERROR;
     }
 
-    text *buffer = read_from_file (in);
-    if (buffer == nullptr) {
-        perror ("READING FORM FILE ERROR");
-        return READ_FILE_ERROR;
+    text *buffer = read_from_file (in, &error);
+    if (!buffer) {
+        return error;
     }
-    fclose (in);
+    
+    if (fclose (in)) {
+        perror ("CLOSE FILE ERROR");
+        return CLOSE_FILE_ERROR;
+    }
+
 /////////////////////////////////////////////////
     hash_table *table = ctor ();
-    if (table == nullptr) {
+    if (!table) {
         perror ("MEMMORY ALLOCATION ERROR");
         return MEM_ALLOC_ERROR;
     }
 
-    words_arr_fill (buffer);
-    
+    error = words_arr_fill (buffer);
+    if (error) {
+        return error;
+    }
 
-#if defined HASH_RET_1
-    hash_table_fill (table, buffer, hash_only_1);
+#ifdef HASH_RET_1
+    error = hash_table_fill (table, buffer, hash_only_1);
 #elif defined HASH_FIRST_ASCII
-    hash_table_fill (table, buffer, hash_first_symb);
+    error = hash_table_fill (table, buffer, hash_first_symb);
 #elif defined HASH_LEN
-    hash_table_fill (table, buffer, hash_len);
+    error = hash_table_fill (table, buffer, hash_len);
 #elif defined HASH_SUM
-    hash_table_fill (table, buffer, hash_sum_symb);
+    error = hash_table_fill (table, buffer, hash_sum_symb);
 #elif defined HASH_ROL
-    hash_table_fill (table, buffer, hash_rol);
-#elif defined HASH_CRC_32
-    #ifndef opt_hash_asm
-        hash_table_fill (table, buffer, hash_crc_32);
-    #else
-        hash_table_fill (table, buffer, hash_crc_32_asm);
-    #endif
+    error = hash_table_fill (table, buffer, hash_rol);
 #else
-    assert (0);
+    #if defined opt_hash_asm || defined opt_hash_asm_inline
+        error = hash_table_fill (table, buffer, hash_crc_32_asm);
+    #else
+        error = hash_table_fill (table, buffer, hash_crc_32);
+    #endif
 #endif
-
-///////////////////////////////////////////////////////////////////////
-
-    // clear (table);
-
+    if (error)
+        return error;
 ///////////////////////////////////////////////////////////////////////
 
     find_info arr_word_pos [buffer->num_of_words] = {};
-    
-    for (int index = 0; index < NUM_TESTS; ++index) {
 
-        #ifndef opt_hash_asm
-            if (find_text_in_table (arr_word_pos, table, buffer, hash_crc_32) == 0) {
+    for (size_t index = 0; index < NUM_TESTS; ++index) {
+
+        #if defined opt_hash_asm || defined opt_hash_asm_inline
+            error = find_text_in_table (arr_word_pos, table, buffer, hash_crc_32_asm);
         #else
-            if (find_text_in_table (arr_word_pos, table, buffer, hash_crc_32_asm) == 0) {
+            error = find_text_in_table (arr_word_pos, table, buffer, hash_crc_32);
         #endif
-            perror ("WORD NOT FOUND");
-            return HASH_TABLE_NOT_FOUND_WORD;
-        }
+
+        if (error)
+            return error;
     }
-///////////////////////////////////////////////////////////////////////
-
-    // graph (table);
 
 ///////////////////////////////////////////////////////////////////////
-    // FILE *csv = fopen ("graphs/excel.csv", "wb");
-    // print_in_file (table, csv);
-    // fclose (csv);
+
+#ifdef GRAPH
+    error = graph (table);
+    if (error)
+        return error;
+#endif
+
+///////////////////////////////////////////////////////////////////////
+#ifdef EXCEL 
+    FILE *csv = fopen ("graphs/excel.csv", "wb");
+    if (!csv) {
+        perror ("OPEN FILE ERROR EXCEL");
+        return OPEN_FILE_ERROR;
+    }
+    
+    print_in_file (table, csv);
+    
+    if (fclose (csv)) {
+        perror ("CLOSE FILE ERROR EXCEL");
+        return CLOSE_FILE_ERROR;
+    }
+#endif
 ///////////////////////////////////////////////////////////////////////
     dtor (&table);
+    
+    puts ("SUCCESSFUL END OF PROG =)");
+    return 0;
 }
