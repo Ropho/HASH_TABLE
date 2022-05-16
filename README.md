@@ -38,6 +38,7 @@ In this part wi will be analyzing 6 different hash functions based on:
 
   * Brief description
   > function is a very bad example of a hash function due to its multiple number of collisions. 
+
   > **X SCALE = 255**
 
 <img src="/pic/ret1.png" alt="RET1" title="RET1" width="720" height="480"/>
