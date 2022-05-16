@@ -3,7 +3,7 @@ HASH_TABLE
 
 ## CONTENTS
 
-[1.Intro](#Intro)
+[1.Intro](#INTRO)
 
 [2.HASH FUCNTION ANALYSIS](#ANALYSIS)
 
