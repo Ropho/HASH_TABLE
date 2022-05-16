@@ -128,7 +128,9 @@ Dispersion values for different hash functions:
 
 
 ## TIME MEASUREMENT
-	> Due to Strong variation in time values using **Linux time**. More precise way to measure **Execution time** is to look at **Total instruction fetch cost** in kcachegrind.
++ Due to Strong variation in time values using **Linux time**. 
+	
++ More precise way to measure **Execution time** is to look at **Total instruction fetch cost** in kcachegrind.
 	
 Have a look at the kcachegrind window. Funcs what we wil be looking at are three at the top of the screenshot. **TOTAL INSTRUCTION FETCH COST: 284 mil**
 
