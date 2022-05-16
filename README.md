@@ -53,7 +53,7 @@ In this part wi will be analyzing 6 different hash functions based on:
   
   * Brief description
   > Like the previous function it has a small variety of keys (only 255 of desired 1024) and very high percent of collisions cause words lengths are rather limited, so it cannot be considered a good hash function. 
-  > **X SCALE = 255**
+  > **X SCALE = 50**
 
 <img src="/pic/len.png" alt="LEN" title="LEN" width="720" height="480"/>
 
