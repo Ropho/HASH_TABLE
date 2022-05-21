@@ -2,26 +2,25 @@ global find_word
 global r_strcmp
 global hash_crc_32_asm
 
-; %include ..h/"constants.h"
 section .text
 
 find_word:
 
     push rcx
-   
+
     xor rcx, rcx         ; index = 0
- 
+
     mov rdx, [rdx + 8]
 
     shl rsi, 5          ;rsi = rsi * 32
-                        
+
                         ;rdx = ptr    
     mov rdx, qword [rdx + rsi]
 .not_nullptr:
 
     cmp rdx, 0d
     je .nullptr
-    
+
     inc rcx     ;++index
 
     mov rsi, qword [rdx]        ;rsi = ptr->word.s
@@ -36,7 +35,7 @@ find_word:
     je .out
 
     mov rdx, qword [rdx + 16]
-        
+
     jmp .not_nullptr
 
 
@@ -48,7 +47,7 @@ find_word:
 .nullptr:
     mov rax, 0d
     jmp .to_end
-    
+
 .not_null:
     mov rax, rcx
     jmp .to_end
@@ -58,8 +57,6 @@ find_word:
     pop rcx
 
     ret
-
-
 
 
 ;----------------------------------------------------------------

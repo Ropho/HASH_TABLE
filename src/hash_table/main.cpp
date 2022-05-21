@@ -1,4 +1,4 @@
-#include ".h/hash_table_func.hpp"
+#include "../.h/hash_table_func.hpp"
 
 
 int main (int argc, char **argv) {
@@ -61,6 +61,7 @@ int main (int argc, char **argv) {
         return error;
 ///////////////////////////////////////////////////////////////////////
 
+#ifdef STRESS_TEST
     find_info arr_word_pos [buffer->num_of_words] = {};
 
     for (size_t index = 0; index < NUM_TESTS; ++index) {
@@ -74,7 +75,7 @@ int main (int argc, char **argv) {
         if (error)
             return error;
     }
-
+#endif
 ///////////////////////////////////////////////////////////////////////
 
 #ifdef GRAPH

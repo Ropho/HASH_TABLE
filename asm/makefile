@@ -1,1 +1,0 @@
-nasm -felf64 asm/find_word.asm && gcc asm/find_word.o asm/test.cpp -no-pie
