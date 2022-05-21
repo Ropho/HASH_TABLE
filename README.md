@@ -43,6 +43,12 @@ In this part wi will be analyzing 6 different hash functions based on:
 
 <img src="/pic/ret1.png" alt="RET1" title="RET1" width="720" height="480"/>
 
+  > **X SCALE = 1024**
+
+<img src="/pic/ret1_big_scale.png" alt="RET1" title="RET1" width="720" height="480"/>
+
+
+
 ### 2.  **RETURN first ASCII**
   
   * Brief description
@@ -50,6 +56,12 @@ In this part wi will be analyzing 6 different hash functions based on:
 
   > **X SCALE = 255**
 <img src="/pic/first_ASCII.png" alt="first_ASCII" title="first_ASCII" width="720" height="480"/>
+
+  > **X SCALE = 1024**
+<img src="/pic/1_ASCII_big_scale.png" alt="first_ASCII" title="first_ASCII" width="720" height="480"/>
+
+
+
 
 ### 3.  **Len of word**
   
@@ -59,6 +71,12 @@ In this part wi will be analyzing 6 different hash functions based on:
   > **X SCALE = 50**
 
 <img src="/pic/len.png" alt="LEN" title="LEN" width="720" height="480"/>
+
+  > **X SCALE = 1024**
+
+<img src="/pic/len_big_scale.png" alt="LEN" title="LEN" width="720" height="480"/>
+
+
 
 ### 4.  **Sum of ASCII**
   
