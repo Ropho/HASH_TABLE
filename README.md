@@ -135,8 +135,8 @@ In this part wi will be analyzing 6 different hash functions based on:
 5.  Hash function
     > CRC32
 6.  Timer
-    > time ./program (WSL)
-    > total instruction fetch cost (kcachegrind)
+    + time ./program (WSL)
+    + total instruction fetch cost (kcachegrind)
 
 ## TESTING
   
