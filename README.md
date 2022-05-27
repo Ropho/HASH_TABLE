@@ -14,7 +14,7 @@ HASH_TABLE
 
 # Intro
 
-Tasks of this project was: 
+Tasks of this project were: 
 1. To study the chain method of constructing hash table
 2. To compare different hash functions
 3. To optimize the hash function using previously learnt methods
